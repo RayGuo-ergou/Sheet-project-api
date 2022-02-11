@@ -1,0 +1,17 @@
+# google cloud api keys
+keys.json
+
+# node packages
+node_modules/
+
+# rest client
+*.http
+
+# for vscode live server
+.vscode/
+
+# log file
+*.log   
+
+# env file
+/.env
