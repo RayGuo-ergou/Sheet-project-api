@@ -1,11 +1,7 @@
 // testing connection
-const { google } = require('googleapis');
-const keys = require('./keys.json');
-const run = require('./googleSheet.js');
 const express = require('express');
 const routes = require('./routers');
 const chalk = require('chalk');
-require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -29,24 +25,6 @@ const chalkTheme = {
   errorTitle: chalk.black.bgRedBright,
 };
 
-// from google cloud
-const client = new google.auth.JWT(
-  process.env.CLIENT_EMAIL,
-  null,
-  process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
-  ['https://www.googleapis.com/auth/spreadsheets']
-);
-
-client.authorize((err, tokens) => {
-  if (err) {
-    console.log(err);
-    return;
-  } else {
-    console.log('connected');
-    run(client);
-  }
-});
-
 // Error handler middleware
 // This must be placed after routes
 app.use((error, req, res, next) => {
@@ -56,11 +34,10 @@ app.use((error, req, res, next) => {
     chalkTheme.errorTitle('Error: '),
     chalkTheme.error(error.message)
   );
-  console.log(error.stack);
 
-  res.status(error.status || 500).json({
+  res.status(error.code || 500).json({
     error: {
-      status: error.status || 500,
+      status: error.code || 500,
       message: error.message || 'Internal Server Error',
     },
   });

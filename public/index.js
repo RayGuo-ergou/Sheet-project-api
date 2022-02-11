@@ -1,17 +1,22 @@
 $(document).ready(function () {
-  $('#submitBtn').click(function () {
-    alert($('#test').val());
-    console.log($('#test').val());
-    let inputArray = $('#test').val().split(/\r?\n/);
-    console.log(inputArray);
-
-    arrayToJson(inputArray);
-    console.log(arrayToJson(inputArray));
-  });
-
   // copyBtn click listener
   $('#copyBtn').click(function () {
     copyToClipboard('#email');
+  });
+
+  // when click submitBtn button get input value from SheetIdInput
+  $('#submitBtn').click(function () {
+    const sheetId = $('#SheetIdInput').val();
+    console.log(sheetId);
+
+    // get sheetId from spreadsheet url
+    const id = getIdFromUrl(sheetId);
+    console.log(id);
+
+    // if id is null or undefined , alert error
+    if (id === null || id === undefined) {
+      alert('Please enter a valid spreadsheet url');
+    } // else
   });
 });
 
@@ -23,35 +28,13 @@ function copyToClipboard(element) {
   $temp.remove();
 }
 
-function arrayToJson(array) {
-  // split each element by colon character
-  let newArray = array
-    .map((r) => {
-      r = r.split(/[\uff1a|:]/);
-      return r;
-    })
-    .filter((r) => {
-      return r.length > 1;
-    }) // remove space for first element in each array
-    .map((r) => {
-      r[0] = r[0].replace(/\s/g, '');
-      return r;
-    });
-
-  // array to json
-  // use each array element as key and value
-  let json = newArray.reduce((acc, cur) => {
-    acc[cur[0]] = cur[1];
-    return acc;
-  }, {});
-  // console.log(json);
-
-  // finally return the json object
-  return json;
-}
-
 // get spreadsheetId from spreadsheet url
 const getIdFromUrl = (url) => {
   const id = url.match(/[-\w]{25,}/);
+
+  // if id is null or undefined , return null
+  if (id === null || id === undefined) {
+    return null;
+  }
   return id[0];
 };

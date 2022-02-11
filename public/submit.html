@@ -30,31 +30,20 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="./index.js"></script>
-    <link href="./index.css" rel="stylesheet" media="screen,projection" />
+    <script src="./submit.js"></script>
+    <link href="./submit.css" rel="stylesheet" media="screen,projection" />
   </head>
   <body>
     <main>
-      <div class="mainContainer">
-        <p style="color: red">
-          Please add the email below as the editor of the spreadsheet you want
-          to use, you can use the copy button.
-        </p>
-        <p id="email">service1@sheet-api-340507.iam.gserviceaccount.com</p>
-        <a class="waves-effect waves-light btn" id="copyBtn">copy</a>
-        <br />
-        <p style="color: red">
-          Input the spreadsheet URL(Please notice the url must contain a 25 char
-          ID)
-        </p>
-        <p>
-          eg:
-          https://docs.google.com/spreadsheets/d/1WCY33CvznaJt8KtchLV6MR9RgwUKbigCF1q8JLSwhF4/edit#gid=0
-        </p>
-        <input type="text" id="SheetIdInput" />
-        <a class="waves-effect waves-light btn" id="submitBtn"
-          >submit the URL</a
-        >
+      <div class="container">
+        <textarea
+          name="submit"
+          id="submitTextArea"
+          cols="30"
+          rows="10"
+        ></textarea>
+
+        <a class="waves-effect waves-light btn" id="submitBtn">submit</a>
       </div>
     </main>
   </body>

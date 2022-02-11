@@ -1,0 +1,13 @@
+textarea {
+  height: 300px;
+}
+
+/*center div id container*/
+.container {
+  margin: 0 auto;
+  width: 500px;
+  height: 500px;
+  border: 1px solid #00bfff;
+  border-radius: 10px;
+  padding: 10px;
+}
