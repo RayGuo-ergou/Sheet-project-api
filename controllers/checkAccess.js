@@ -16,7 +16,6 @@ const checkAccess = async function (client, req, res, next) {
     // if error return next with error
     return next(error.response.data.error);
   }
-
   return res.json({ message: 'success', status: 200 });
 };
 

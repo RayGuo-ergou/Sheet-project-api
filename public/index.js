@@ -16,7 +16,34 @@ $(document).ready(function () {
     // if id is null or undefined , alert error
     if (id === null || id === undefined) {
       alert('Please enter a valid spreadsheet url');
-    } // else
+    } // else ajax get with id to /checkAccess
+    else {
+      $.ajax({
+        url: '/checkAccess',
+        type: 'GET',
+        data: {
+          sheetId: id,
+        },
+        success: function (data) {
+          console.log(data);
+          if (data.status === 200) {
+            // if success, redirect to /submit page with id
+            window.location.href = '/submit?sheetId=' + id;
+          } else {
+            // if error, alert error
+            alert(data.error.message);
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log(jqXHR);
+          console.log(textStatus);
+          console.log(errorThrown);
+          alert(
+            `The error code is ${jqXHR.status}. (if code is 403, please check if your added the email address to the spreadsheet. If the code is 404, please check if the spreadsheet url is correct)`
+          );
+        },
+      });
+    }
   });
 });
 

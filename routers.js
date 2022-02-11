@@ -7,6 +7,8 @@ const { google } = require('googleapis');
 require('dotenv').config();
 
 const checkAccess = require('./controllers/checkAccess');
+const getAllSheets = require('./controllers/getAllSheets');
+const writeIntoSheet = require('./controllers/writeIntoSheet');
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
   flags: 'a',
@@ -42,6 +44,21 @@ router.get('/hello', function (req, res) {
 // router to check if we have access to google sheet
 router.get('/checkAccess', (req, res, next) => {
   checkAccess(client, req, res, next);
+});
+
+// router to get all sheet title
+router.get('/sheets', (req, res, next) => {
+  getAllSheets(client, req, res, next);
+});
+
+// router to use submit page
+router.get('/submit', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'submit.html'));
+});
+
+// router to update sheet
+router.post('/updateSheet', (req, res, next) => {
+  writeIntoSheet(client, req, res, next);
 });
 
 //export the router
