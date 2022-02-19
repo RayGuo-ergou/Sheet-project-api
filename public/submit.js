@@ -108,11 +108,25 @@ function arrayToJson(array) {
     }) // remove space for first element in each array
     .map((r) => {
       r[0] = r[0].replace(/\s/g, '');
+
+      // make all r[0] to lower case
+      r[0] = r[0].toLowerCase();
+
       r[1] = r[1].replace(/\s/g, '');
 
       // if r[1] is equal to 'Table' plus a number, lowercase the first letter
-      if (r[1].match(/^Table\d+$/)) {
-        r[1] = r[1].replace(/^Table/, 'table');
+      // if (r[1].match(/^Table\d+$/)) {
+      //   r[1] = r[1].replace(/^Table/, 'table');
+      // }
+
+      //if r[1] is equal to 'Table' or 'T' or 't' plus a number, lowercase the first letter
+      if (r[1].match(/^(Table|T|t)\d+$/)) {
+        r[1] = r[1].replace(/^(Table|T|t)/, 'table');
+      }
+
+      // if r[2] exists, combine r[1] and r[2]
+      if (r[2] !== undefined) {
+        r[1] = r[1] + ':' + r[2];
       }
 
       return r;
@@ -126,6 +140,7 @@ function arrayToJson(array) {
   }, {});
   // console.log(json);
 
+  json.test = 'test';
   // finally return the json object
   return json;
 }

@@ -59,91 +59,91 @@
 // console.log(removeSpaces('')); // 👉️ ''
 
 //reverse month and day eg: 11/1 =>> 1/11
-const reverseDate = (str) => {
-  const date = str.split('/');
-  // if date[0] length is 3 remove char[1]
-  if (date[0].length === 3) {
-    // remove char[1]
-    date[0] = date[0].slice(0, 1) + date[0].slice(2);
-  }
+// const reverseDate = (str) => {
+//   const date = str.split('/');
+//   // if date[0] length is 3 remove char[1]
+//   if (date[0].length === 3) {
+//     // remove char[1]
+//     date[0] = date[0].slice(0, 1) + date[0].slice(2);
+//   }
 
-  // if data[1] length is 4 remove the second and third char
-  if (date[1].length === 4) {
-    // remove char[1]
-    date[1] = date[1].slice(0, 1) + date[1].slice(3);
-  }
+//   // if data[1] length is 4 remove the second and third char
+//   if (date[1].length === 4) {
+//     // remove char[1]
+//     date[1] = date[1].slice(0, 1) + date[1].slice(3);
+//   }
 
-  return `${date[1]}/${date[0]}`;
-};
+//   return `${date[1]}/${date[0]}`;
+// };
 
-const convertChineseDate = (str) => {
-  return str.replace(
-    /年|月|日|一|二|三|四|五|六|七|八|九|十/g,
-    function (match) {
-      switch (match) {
-        case '月':
-          return '/';
-        case '日':
-          return '';
-        case '一':
-          return '1';
-        case '二':
-          return '2';
-        case '三':
-          return '3';
-        case '四':
-          return '4';
-        case '五':
-          return '5';
-        case '六':
-          return '6';
-        case '七':
-          return '7';
-        case '八':
-          return '8';
-        case '九':
-          return '9';
-        case '十':
-          return '10';
-        default:
-          return match;
-      }
-    }
-  );
-};
-// if the date has chinese characters, convert it to english
-var str = '二月四日';
-console.log(reverseDate(convertChineseDate(str)));
+// const convertChineseDate = (str) => {
+//   return str.replace(
+//     /年|月|日|一|二|三|四|五|六|七|八|九|十/g,
+//     function (match) {
+//       switch (match) {
+//         case '月':
+//           return '/';
+//         case '日':
+//           return '';
+//         case '一':
+//           return '1';
+//         case '二':
+//           return '2';
+//         case '三':
+//           return '3';
+//         case '四':
+//           return '4';
+//         case '五':
+//           return '5';
+//         case '六':
+//           return '6';
+//         case '七':
+//           return '7';
+//         case '八':
+//           return '8';
+//         case '九':
+//           return '9';
+//         case '十':
+//           return '10';
+//         default:
+//           return match;
+//       }
+//     }
+//   );
+// };
+// // if the date has chinese characters, convert it to english
+// var str = '二月四日';
+// console.log(reverseDate(convertChineseDate(str)));
 
-function getMonthFromString(mon) {
-  var d = Date.parse(mon + ' 1, 2020');
-  console.log(mon + ' 1, 2020');
-  console.log(`d`);
-  console.log(d);
-  if (!isNaN(d)) {
-    return new Date(d).getMonth() + 1;
-  }
-  return -1;
-}
+// function getMonthFromString(mon) {
+//   var d = Date.parse(mon + ' 1, 2020');
+//   console.log(mon + ' 1, 2020');
+//   console.log(`d`);
+//   console.log(d);
+//   if (!isNaN(d)) {
+//     return new Date(d).getMonth() + 1;
+//   }
+//   return -1;
+// }
 
-console.log(getMonthFromString('FebRuary'));
+// console.log(getMonthFromString('FebRuary'));
 
-// check if any chinese character in a string
-const hasChinese = (str) => {
-  return /[\u4e00-\u9fa5]/.test(str);
-};
+// // check if any chinese character in a string
+// const hasChinese = (str) => {
+//   return /[\u4e00-\u9fa5]/.test(str);
+// };
 
-// check if any english character in a string
-const hasEnglish = (str) => {
-  return /[a-zA-Z]/.test(str);
-};
+// // check if any english character in a string
+// const hasEnglish = (str) => {
+//   return /[a-zA-Z]/.test(str);
+// };
 
-//only get english characters in a string, make it string
-const getEnglish = (str) => {
-  return str.match(/[a-zA-Z]/g).join('');
-};
+// //only get english characters in a string, make it string
+// const getEnglish = (str) => {
+//   return str.match(/[a-zA-Z]/g).join('');
+// };
 
-console.log(getEnglish('feb/01'));
+// console.log(getEnglish('feb/01'));
 
 // // check if any month word in a string like january
 // const hasMonth = (str) => {
@@ -167,3 +167,53 @@ console.log(getEnglish('feb/01'));
 // console.log(hasMonth('october')); // 👉️ true
 // console.log(hasMonth('november')); // 👉️ true
 // console.log(hasMonth('december')); // 👉️ true
+
+// const formatTime = (time) => {
+//   // get all numbers from a string
+//   const numbers = time.match(/\d+/g);
+//   // if nothing found return empty string
+//   if (!numbers) {
+//     return '';
+//   }
+
+//   // if only one number make it in format '11P.M.'
+//   if (numbers.length === 1) {
+//     return `${numbers[0]}P.M.`;
+//   }
+//   // if two numbers make it in format '11:11P.M.'
+//   if (numbers.length === 2) {
+//     return `${numbers[0]}:${numbers[1]}P.M.`;
+//   }
+//   return time;
+// };
+
+// console.log(formatTime('11:11')); // 👉️ '11:11P.M.'
+// console.log(formatTime('11:11:11')); // 👉️ '11:11:11P.M.'
+// console.log(formatTime('')); // 👉️ '11P.M.'
+
+const formatPhoneNumber = (phoneNumberString) => {
+  let newString;
+  // if phone number is empty return empty string
+  if (!phoneNumberString || phoneNumberString === '') {
+    return '';
+  }
+  // if phone number only has nine, newString = '0' + phoneNumberString
+  if (phoneNumberString.length === 9) {
+    newString = '0' + phoneNumberString;
+  } else {
+    // newString = phoneNumberString
+    newString = phoneNumberString;
+  }
+
+  // add space after 3rd number and 6th number
+  newString =
+    newString.slice(0, 3) +
+    ' ' +
+    newString.slice(3, 6) +
+    ' ' +
+    newString.slice(6);
+
+  return newString;
+};
+
+console.log(formatPhoneNumber('0123456789')); // 👉️ '123 456 789'

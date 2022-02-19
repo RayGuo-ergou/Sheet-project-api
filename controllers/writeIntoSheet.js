@@ -10,28 +10,26 @@ const writeIntoSheet = async function (client, req, res, next) {
   //get data from req.body
   const data = req.body;
 
-  const checker = Object.keys(tableList).find((key) => key === data.RoomNumber);
+  const checker = Object.keys(tableList).find((key) => key === data.roomnumber);
 
   // if checker is undefined, return next with error
   if (checker === undefined) {
     return next({ message: 'Room number not found', status: 404 });
   } else {
     // get the roomnumber from data
-    const roomNumber = data.RoomNumber;
+    const roomNumber = data.roomnumber;
     // create the range for sheet
-    const range = `${sheetName}${tableList[data.RoomNumber]}`;
+    const range = `${sheetName}${tableList[data.roomnumber]}`;
     // create an array to store data
     const dataArray = [];
     // push every data into dataArray
-    dataArray.push(checkNullValue(data.BookingName));
+    dataArray.push(checkNullValue(data.bookingname));
     dataArray.push('');
-    dataArray.push(checkNullValue(data.NumberofPeople));
-    dataArray.push(
-      checkDate(data.Date) + ', ' + checkNullValue(data.TimeofArrival)
-    );
-    dataArray.push(checkNullValue(data.ContactNumber));
-    dataArray.push(checkNullValue(data.Referral));
-    dataArray.push(checkNullValue(data.Manager));
+    dataArray.push(checkNullValue(data.numberofpeople));
+    dataArray.push(checkNullValue(formatTime(data.timeofarrival)));
+    dataArray.push(checkNullValue(formatPhoneNumber(data.contactnumber)));
+    dataArray.push(checkNullValue(data.referral));
+    dataArray.push(checkNullValue(data.manager));
 
     // update the sheet
     await gsApi.spreadsheets.values.update(
@@ -192,6 +190,46 @@ const hasEnglish = (str) => {
 //only get english characters in a string, make it string
 const getEnglish = (str) => {
   return str.match(/[a-zA-Z]/g).join('');
+};
+
+const formatTime = (time) => {
+  // get all numbers from a string
+  const numbers = time.match(/\d+/g);
+  // if only one number make it in format '11P.M.'
+  if (numbers.length === 1) {
+    return `${numbers[0]}P.M.`;
+  }
+  // if two numbers make it in format '11:11P.M.'
+  if (numbers.length === 2) {
+    return `${numbers[0]}:${numbers[1]}P.M.`;
+  }
+  return time;
+};
+
+const formatPhoneNumber = (phoneNumberString) => {
+  let newString;
+  // if phone number is empty return empty string
+  if (!phoneNumberString || phoneNumberString === '') {
+    return '';
+  }
+
+  // if phone number only has nine, newString = '0' + phoneNumberString
+  if (phoneNumberString.length === 9) {
+    newString = '0' + phoneNumberString;
+  } else {
+    // newString = phoneNumberString
+    newString = phoneNumberString;
+  }
+
+  // add space after 3rd number and 6th number
+  newString =
+    newString.slice(0, 3) +
+    ' ' +
+    newString.slice(3, 6) +
+    ' ' +
+    newString.slice(6);
+
+  return newString;
 };
 
 // export the writeIntoSheet method
