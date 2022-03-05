@@ -197,12 +197,29 @@ const formatTime = (time) => {
   const numbers = time.match(/\d+/g);
   // if only one number make it in format '11P.M.'
   if (numbers.length === 1) {
+    if (numbers[0] <= 5) {
+      return `${numbers[0]}A.M.`;
+    } else {
+      if (numbers[0] > 12) {
+        return `${numbers[0] - 12}P.M.`;
+      }
+    }
     return `${numbers[0]}P.M.`;
   }
   // if two numbers make it in format '11:11P.M.'
   if (numbers.length === 2) {
+    if (numbers[0] <= 5) {
+      return `${numbers[0]}:${numbers[1]}A.M.`;
+    } else {
+      if (numbers[0] > 12) {
+        return `${numbers[0] - 12}:${numbers[1]}P.M.`;
+      }
+    }
     return `${numbers[0]}:${numbers[1]}P.M.`;
   }
+
+  // TODO:
+  // if no number return origin time which should be an error, but keep it for now
   return time;
 };
 
@@ -223,11 +240,11 @@ const formatPhoneNumber = (phoneNumberString) => {
 
   // add space after 3rd number and 6th number
   newString =
-    newString.slice(0, 3) +
+    newString.slice(0, 4) +
     ' ' +
-    newString.slice(3, 6) +
+    newString.slice(4, 7) +
     ' ' +
-    newString.slice(6);
+    newString.slice(7);
 
   return newString;
 };

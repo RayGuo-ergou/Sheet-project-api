@@ -5,6 +5,7 @@ const chalk = require('chalk');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const hostname = process.env.HOSTNAME || 'http://localhost';
 
 // parse application/json
 app.use(express.json());
@@ -44,5 +45,5 @@ app.use((error, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server start at PORT ${PORT}`);
+  console.log(`Server start at ${hostname}:${PORT}`);
 });
