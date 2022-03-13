@@ -197,7 +197,7 @@ const formatTime = (time) => {
   const numbers = time.match(/\d+/g);
   // if only one number make it in format '11P.M.'
   if (numbers.length === 1) {
-    if (numbers[0] <= 5) {
+    if (numbers[0] <= 5 || numbers[0] == 12) {
       return `${numbers[0]}A.M.`;
     } else {
       if (numbers[0] > 12) {
