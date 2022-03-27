@@ -208,7 +208,7 @@ const formatTime = (time) => {
   }
   // if two numbers make it in format '11:11P.M.'
   if (numbers.length === 2) {
-    if (numbers[0] <= 5) {
+    if (numbers[0] <= 5 || numbers[0] == 12) {
       return `${numbers[0]}:${numbers[1]}A.M.`;
     } else {
       if (numbers[0] > 12) {
