@@ -47,12 +47,11 @@ const writeIntoSheet = async function (client, req, res, next) {
           console.log(err);
           return next(err);
         } else {
-          // console.log(result.config.data);
-          console.log(sheetName);
           const newCustomer = new Customer({
             name: checkNullValue(data.bookingname),
             phone: checkNullValue(formatPhoneNumber(data.contactnumber)),
             Date: checkNullValue(data.date),
+            from: sheetName,
           });
 
           try {
