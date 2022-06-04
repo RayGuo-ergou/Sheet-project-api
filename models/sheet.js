@@ -9,6 +9,7 @@ const sheetSchema = new Schema({
     required: true,
     default: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss"),
   },
+  Name: { type: String, required: true },
 });
 
 //create model of customer

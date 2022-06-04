@@ -19,6 +19,8 @@ $(document).ready(function () {
       // console.log(data);
       // if data is not null or undefined
       if (data !== null && data !== undefined) {
+        // set id title to data.title
+        $('#title').html(data.title);
         // get all sheets' title
         const sheetsTitle = data.sheetsTitle;
         console.log(sheetsTitle);
@@ -81,8 +83,16 @@ $(document).ready(function () {
             console.log(data);
             // if data is not null or undefined
             if (data !== null && data !== undefined) {
-              // alert success
-              alert('Success');
+              // if array databaseStatus not empty
+              if (data.databaseStatus.length !== 0) {
+                alert(
+                  'The sheet write successfully but it may have issues with database',
+                );
+                console.log(first);
+              } else {
+                // alert success
+                alert('Success');
+              }
             }
           },
           error: function (err) {

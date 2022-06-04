@@ -50,6 +50,7 @@ const writeIntoSheet = async function (client, req, res, next) {
           console.log(err);
           return next(err);
         } else {
+          let dbErrs = [];
           const newCustomer = {
             name: checkNullValue(data.bookingname),
             phone: checkNullValue(formatPhoneNumber(data.contactnumber)),
@@ -59,8 +60,9 @@ const writeIntoSheet = async function (client, req, res, next) {
           const newUrl = {
             URL: result.data.spreadsheetId,
             Date: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss"),
+            Name: sheetName,
           };
-          const urlFilter = { URL: result.data.spreadsheetId };
+          const urlFilter = { Name: sheetName, URL: result.data.spreadsheetId };
           const customerFilter = { phone: newCustomer.phone };
           const options = {
             upsert: true,
@@ -75,17 +77,20 @@ const writeIntoSheet = async function (client, req, res, next) {
             );
           } catch (err) {
             console.log(err);
+            dbErrs.push(err);
           }
 
           try {
             await UrlModel.findOneAndUpdate(urlFilter, newUrl, options);
           } catch (err) {
             console.log(err);
+            dbErrs.push(err);
           }
           return await res.json({
             message: 'success',
             status: 200,
             data: result,
+            databaseStatus: dbErrs,
           });
         }
       },

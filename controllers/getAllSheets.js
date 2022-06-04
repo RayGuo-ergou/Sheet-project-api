@@ -22,11 +22,9 @@ const getAllSheets = async function (client, req, res, next) {
   const sheetsTitle = sheets.data.sheets.map((sheet) => {
     return sheet.properties.title;
   });
-  // print all sheets' title in console
-  console.log(sheetsTitle);
 
   //res send json format of sheetsTitle to client
-  return res.json({ sheetsTitle });
+  return res.json({ sheetsTitle, title: sheets.data.properties.title });
 };
 
 //export the getAllSheets method
