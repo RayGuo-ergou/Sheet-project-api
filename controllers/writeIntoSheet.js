@@ -1,5 +1,6 @@
 const tableList = require('../tableList.json');
 const { google } = require('googleapis');
+const Customer = require('../models/customer');
 const writeIntoSheet = async function (client, req, res, next) {
   const gsApi = google.sheets({ version: 'v4', auth: client });
 
@@ -41,29 +42,35 @@ const writeIntoSheet = async function (client, req, res, next) {
           values: [dataArray],
         },
       },
-      (err, result) => {
+      async (err, result) => {
         if (err) {
           console.log(err);
           return next(err);
         } else {
-          return res.json({ message: 'success', status: 200 });
+          // console.log(result.config.data);
+          console.log(sheetName);
+          const newCustomer = new Customer({
+            name: checkNullValue(data.bookingname),
+            phone: checkNullValue(formatPhoneNumber(data.contactnumber)),
+            Date: checkNullValue(data.date),
+          });
+
+          try {
+            await newCustomer.save();
+          } catch (err) {
+            console.log(err);
+          }
+
+          return await res.json({
+            message: 'success',
+            status: 200,
+            data: result,
+          });
         }
-      }
+      },
     );
   }
 };
-
-// example json
-// const exampleJson = {
-//   RoomNumber: '555',
-//   BookingName: 'zhen 连联',
-//   NumberofPeople: '10',
-//   Date: '12/Feb',
-//   TimeofArrival: '10P.M.',
-//   ContactNumber: '0476248060',
-//   Referral: '',
-//   Manager: 'ReCo',
-// };
 
 const checkNullValue = (data) => {
   // if data is null, undefined, or empty string
@@ -169,7 +176,7 @@ const convertChineseDate = (str) => {
         default:
           return match;
       }
-    }
+    },
   );
 };
 
@@ -193,6 +200,10 @@ const getEnglish = (str) => {
 };
 
 const formatTime = (time) => {
+  // if time is undefined or null, return ''
+  if (!time || time === '') {
+    return '';
+  }
   // get all numbers from a string
   const numbers = time.match(/\d+/g);
   // if only one number make it in format '11P.M.'
