@@ -13,9 +13,9 @@ const getAllSheets = async function (client, req, res, next) {
       spreadsheetId: sheetId,
     });
   } catch (error) {
-    console.log(error.response.data.error);
+    console.log(error);
     // if error return next with error
-    return next(error.response.data.error);
+    return next(error);
   }
 
   // sort all title into an array

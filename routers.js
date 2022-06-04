@@ -10,6 +10,8 @@ const checkAccess = require('./controllers/checkAccess');
 const getAllSheets = require('./controllers/getAllSheets');
 const writeIntoSheet = require('./controllers/writeIntoSheet');
 
+const urlModel = require('./models/sheet');
+
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
   flags: 'a',
 });
@@ -25,7 +27,7 @@ const client = new google.auth.JWT(
   process.env.CLIENT_EMAIL,
   null,
   process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
-  ['https://www.googleapis.com/auth/spreadsheets']
+  ['https://www.googleapis.com/auth/spreadsheets'],
 );
 
 client.authorize((err, tokens) => {
@@ -59,6 +61,19 @@ router.get('/submit', (req, res) => {
 // router to update sheet
 router.post('/updateSheet', (req, res, next) => {
   writeIntoSheet(client, req, res, next);
+});
+
+// router to get all sheets accessed before
+router.get('/urls', async (req, res, next) => {
+  await urlModel
+    .find({})
+    .then((urls) => {
+      res.json(urls);
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 });
 
 //export the router

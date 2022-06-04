@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 // choose the data model to the admin page
 const customerModel = require('./models/customer');
+const urlModel = require('./models/sheet');
 
 const databaseParent = {
   name: 'Data',
@@ -28,6 +29,7 @@ const locale = {
 const AdminBroOptions = {
   resources: [
     { resource: customerModel, options: { navigation: databaseParent } },
+    { resource: urlModel, options: { navigation: databaseParent } },
   ],
   preventAssignment: true,
   dashboard: {

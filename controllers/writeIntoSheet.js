@@ -1,6 +1,9 @@
 const tableList = require('../tableList.json');
 const { google } = require('googleapis');
 const Customer = require('../models/customer');
+const UrlModel = require('../models/sheet');
+const { format } = require('date-fns');
+
 const writeIntoSheet = async function (client, req, res, next) {
   const gsApi = google.sheets({ version: 'v4', auth: client });
 
@@ -47,19 +50,38 @@ const writeIntoSheet = async function (client, req, res, next) {
           console.log(err);
           return next(err);
         } else {
-          const newCustomer = new Customer({
+          const newCustomer = {
             name: checkNullValue(data.bookingname),
             phone: checkNullValue(formatPhoneNumber(data.contactnumber)),
             Date: checkNullValue(data.date),
             from: sheetName,
-          });
+          };
+          const newUrl = {
+            URL: result.data.spreadsheetId,
+            Date: format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss"),
+          };
+          const urlFilter = { URL: result.data.spreadsheetId };
+          const customerFilter = { phone: newCustomer.phone };
+          const options = {
+            upsert: true,
+            new: true,
+          };
 
           try {
-            await newCustomer.save();
+            await Customer.findOneAndUpdate(
+              customerFilter,
+              newCustomer,
+              options,
+            );
           } catch (err) {
             console.log(err);
           }
 
+          try {
+            await UrlModel.findOneAndUpdate(urlFilter, newUrl, options);
+          } catch (err) {
+            console.log(err);
+          }
           return await res.json({
             message: 'success',
             status: 200,
